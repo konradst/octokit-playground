@@ -9,6 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class GithubActionsListComponent implements OnInit {
 
+  workflow: any;
+  workflowRuns: any;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -23,6 +26,27 @@ export class GithubActionsListComponent implements OnInit {
     const {
       data: { login },
     } = await octokit.rest.users.getAuthenticated();
-    console.log("Hello, %s", login);
+
+    const {
+      data: { workflows },
+    } = await octokit.rest.actions.listRepoWorkflows({
+      owner: 'konradst',
+      repo: 'octokit-playground'
+    });
+
+    console.log('workflows', workflows);
+
+    const {
+      data: { workflow_runs },
+    } = await octokit.rest.actions.listWorkflowRuns({
+      owner: 'konradst',
+      repo: 'octokit-playground',
+      workflow_id: workflows[0].id
+    });
+
+    console.log('workflow runs', workflow_runs);
+
+    this.workflow = workflows[0];
+    this.workflowRuns = workflow_runs;
   }
 }
