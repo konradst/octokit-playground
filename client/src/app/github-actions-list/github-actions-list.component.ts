@@ -9,8 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class GithubActionsListComponent implements OnInit {
 
-  workflow: any;
-  workflowRuns: any;
+  workflows: any;
+  workflowRuns: any = {};
 
   constructor() { }
 
@@ -35,18 +35,21 @@ export class GithubActionsListComponent implements OnInit {
     });
 
     console.log('workflows', workflows);
+    this.workflows = workflows;
 
-    const {
-      data: { workflow_runs },
-    } = await octokit.rest.actions.listWorkflowRuns({
-      owner: 'konradst',
-      repo: 'octokit-playground',
-      workflow_id: workflows[0].id
-    });
+    for (let w = 0, ww = workflows.length; w < ww; w++) {
+      const {
+        data: { workflow_runs },
+      } = await octokit.rest.actions.listWorkflowRuns({
+        owner: 'konradst',
+        repo: 'octokit-playground',
+        workflow_id: workflows[w].id
+      });
 
-    console.log('workflow runs', workflow_runs);
+      console.log(workflow_runs)
 
-    this.workflow = workflows[0];
-    this.workflowRuns = workflow_runs;
+      this.workflowRuns[workflows[w].id] = workflow_runs;
+
+    }
   }
 }

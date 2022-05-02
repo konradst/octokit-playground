@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { GithubActionsListModule } from './github-actions-list/github-actions-list.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,9 @@ import { GithubActionsListModule } from './github-actions-list/github-actions-li
   imports: [
     BrowserModule,
 
-    GithubActionsListModule
+    GithubActionsListModule,
+
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
